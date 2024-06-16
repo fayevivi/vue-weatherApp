@@ -13,12 +13,22 @@ const handleSearch = () => {
   searchTerm.timeOut = setTimeout(async () => {
     if (searchTerm.query !== "") {
       const res = await fetch(
-        `http://api.weatherapi.com/v1/current.json?key=277148df68ba479da4b91245241606&q=${searchTerm.query}`
+        `http://api.weatherapi.com/v1/search.json?key=277148df68ba479da4b91245241606&q=${searchTerm.query}`
       );
       const data = await res.json();
       searchTerm.results = data;
+    } else {
+      searchTerm.results = null;
     }
   }, 500);
+};
+
+const getWeather = async (id) => {
+  console.log(id);
+  const res = await fetch(`
+    http://api.weatherapi.com/v1/forecast.json?key=277148df68ba479da4b91245241606&q=id:${id}&days=3&aqi=no&alerts=no`);
+  const data = await res.json();
+  console.log(data);
 };
 </script>
 
@@ -41,11 +51,14 @@ const handleSearch = () => {
     </form>
     <!-- search suggestions -->
     <div class="bg-white my-2 rounded-lg shadow-lg">
-      <div>
-        <div>
+      <div v-if="searchTerm.results !== null">
+        <div v-for="place in searchTerm.results" :key="place.id">
           <button
+            @click="getWeather(place.id)"
             class="px-3 my-2 hover:text-indigo-600 hover:font-bold w-full text-left"
-          ></button>
+          >
+            {{ place.name }}, {{ place.region }}, {{ place.country }}
+          </button>
         </div>
       </div>
     </div>
