@@ -1,4 +1,26 @@
-<script setup></script>
+<script setup>
+import { reactive } from "vue";
+
+const searchTerm = reactive({
+  query: "",
+  timeOut: null,
+  results: null,
+});
+
+const handleSearch = () => {
+  clearTimeout(searchTerm.timeOut);
+  // 每半秒鐘做一次動作，且做之前會先清除。以防止做太多次動作。kind of create a lazyLoad or debounce
+  searchTerm.timeOut = setTimeout(async () => {
+    if (searchTerm.query !== "") {
+      const res = await fetch(
+        `http://api.weatherapi.com/v1/current.json?key=277148df68ba479da4b91245241606&q=${searchTerm.query}`
+      );
+      const data = await res.json();
+      searchTerm.results = data;
+    }
+  }, 500);
+};
+</script>
 
 <template>
   <div>
@@ -12,6 +34,8 @@
           type="text"
           placeholder="Search for a place"
           class="rounded-r-lg p-2 border-0 outline-0 focus:ring-2 focus:ring-indigo-600 ring-inset w-full"
+          v-model="searchTerm.query"
+          @input="handleSearch()"
         />
       </div>
     </form>
