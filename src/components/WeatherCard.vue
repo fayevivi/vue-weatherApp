@@ -1,4 +1,9 @@
-<script setup></script>
+<script setup>
+import BorderLine from "./BorderLine.vue";
+defineProps({
+  place: Object,
+});
+</script>
 
 <template>
   <div
@@ -8,20 +13,33 @@
     <div class="mb-2 flex justify-between items-center">
       <div class="flex items-center justify-center gap-2">
         <i class="fa-solid fa-location-dot"></i>
-        <h1 class="text-3xl"></h1>
+        <h1 class="text-3xl">{{ place.location.name }}</h1>
       </div>
       <div class="flex items-center justify-center gap-2">
         <i class="fa-solid fa-clock"></i>
-        <h1 class="text-3xl"></h1>
+        <h1 class="text-3xl">
+          {{ new Date(place.location.localtime).getHours() }}:{{
+            new Date(place.location.localtime).getMinutes()
+          }}
+        </h1>
       </div>
     </div>
 
     <!-- current weather -->
     <div class="text-center flex-1">
-      <img class="mx-auto -mb-10" />
-      <h1 class="text-9xl mb-2 -mr-4"></h1>
-      <p class="text-2xl"></p>
+      <img
+        :src="place.current.condition.icon"
+        alt="icon"
+        width="200"
+        class="mx-auto -mb-10"
+      />
+      <h1 class="text-9xl mb-2 -mr-4">
+        {{ Math.round(place.current.temp_c) }}&deg;
+      </h1>
+      <p class="text-2xl">{{ place.current.condition.text }}</p>
     </div>
+
+    <BorderLine />
 
     <!-- forecast -->
     <div></div>
