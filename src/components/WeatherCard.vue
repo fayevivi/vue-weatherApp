@@ -1,5 +1,6 @@
 <script setup>
 import BorderLine from "./BorderLine.vue";
+import WeatherForeCastDay from "@/components/WeatherForecastDay.vue";
 defineProps({
   place: Object,
 });
@@ -7,7 +8,7 @@ defineProps({
 
 <template>
   <div
-    class="text-white p-10 rounded-lg shadow-lg gap-6 mb-6 relative overflow-hidden"
+    class="text-white p-10 rounded-lg shadow-lg gap-6 mb-6 relative overflow-hidden bg-blue-500"
   >
     <!-- Location & time -->
     <div class="mb-2 flex justify-between items-center">
@@ -42,7 +43,9 @@ defineProps({
     <BorderLine />
 
     <!-- forecast -->
-    <div></div>
+    <div v-for="(day, idx) in place.forecast.forecastday" :key="idx">
+      <WeatherForeCastDay :day="day" />
+    </div>
 
     <div></div>
 
