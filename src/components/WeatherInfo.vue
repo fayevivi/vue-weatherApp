@@ -10,7 +10,7 @@ defineProps({
   >
     <!-- Close button -->
     <div class="flex justify-end mb-10">
-      <button class="p-1">
+      <button class="p-1" @click="$emit('close-info')">
         <i class="fa-solid fa-xmark text-xl"></i>
       </button>
     </div>

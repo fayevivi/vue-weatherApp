@@ -1,9 +1,13 @@
 <script setup>
 import BorderLine from "./BorderLine.vue";
 import WeatherForeCastDay from "@/components/WeatherForecastDay.vue";
+import WeatherInfo from "./WeatherInfo.vue";
+import { ref } from "vue";
 defineProps({
   place: Object,
 });
+
+const showDetail = ref(false);
 </script>
 
 <template>
@@ -47,11 +51,14 @@ defineProps({
       <WeatherForeCastDay :day="day" />
     </div>
 
-    <div></div>
+    <!-- WeatherInfo -->
+    <div v-show="showDetail">
+      <WeatherInfo :place="place" @close-info="showDetail = false" />
+    </div>
 
     <!-- forecast btn -->
     <div class="flex justify-end items-center gap-1 mt-10">
-      <button>
+      <button @click="showDetail = true">
         More <i class="fa-solid fa-arrow-right text-sm -mb-px"></i>
       </button>
     </div>
