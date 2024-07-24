@@ -62,7 +62,7 @@ defineProps({
       <h3 class="text-slate-900/50">
         last update: {{ place.current.last_updated }}
       </h3>
-      <button>
+      <button @click="$emit('remove-place')">
         <i class="fa-solid fa-trash"></i>
       </button>
     </div>

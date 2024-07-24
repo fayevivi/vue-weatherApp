@@ -7,7 +7,14 @@ defineProps({
   place: Object,
 });
 
+const emit = defineEmits(["delete-place"]);
+
 const showDetail = ref(false);
+
+const removePlace = (placeName) => {
+  emit("delete-place", placeName);
+  showDetail.value = false;
+};
 </script>
 
 <template>
@@ -51,10 +58,16 @@ const showDetail = ref(false);
       <WeatherForeCastDay :day="day" />
     </div>
 
-    <!-- WeatherInfo -->
-    <div v-show="showDetail">
-      <WeatherInfo :place="place" @close-info="showDetail = false" />
-    </div>
+    <Transition name="fade">
+      <!-- WeatherInfo -->
+      <div v-show="showDetail">
+        <WeatherInfo
+          :place="place"
+          @close-info="showDetail = false"
+          @remove-place="removePlace(place.location.name)"
+        />
+      </div>
+    </Transition>
 
     <!-- forecast btn -->
     <div class="flex justify-end items-center gap-1 mt-10">
@@ -66,6 +79,17 @@ const showDetail = ref(false);
 </template>
 
 <style scoped>
+/* for Transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .bg-day {
   background-color: #8ec5fc;
   background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
